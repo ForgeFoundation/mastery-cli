@@ -220,12 +220,12 @@
     "category": "MDiscountedCashFlowValuation"
   },
   {
-    "term": "9 - Calculate the 1-year forward 1-year rate (1y1y).",
-    "example": "$$\n1+1 y 1 y=\\frac{(1.08)^2}{1.04}=1 + 12.154 \\%\n$$",
-    "description": "Example:\nThe 2 -year spot rate is $8 \\%$ and the 1 -year spot rate is $4 \\%$.\nCalculate the 1-year forward 1-year rate (1y1y).",
-    "prompt": "Calculate the 1-year forward 1-year rate (1y1y).",
+    "term": "9 - C) $9.0 \\% ; 15.0 \\%$.",
+    "example": "",
+    "description": "An investor buys a share of stock for $\\$ 200.00$ at time $t=0$. At time $t=1$, the investor buys an additional share for $\\$ 225.00$. At time $t=2$ the investor sells both shares for $\\$ 235.00$. During both years, the stock paid a per share dividend of $\\$ 5.00$. What are the approximate time-weighted and money-weighted returns respectively?\nA) $10.8 \\% ; 9.4 \\%$.\nВ) $7.7 \\% ; 7.7 \\%$.\nC) $9.0 \\% ; 15.0 \\%$.\n\n",
+    "prompt": "C) $9.0 \\% ; 15.0 \\%$.",
     "reference_page": "E:\\Documents\\GitHub\\mastery-cli\\src\\data\\user_data\\terms_modules\\b012-cfa\\cache_md\\M2 - Discounted Cash Flow Valuation.md",
-    "reference_line": 277,
+    "reference_line": 320,
     "module_name": "CFA Modules",
     "category": "MDiscountedCashFlowValuation"
   },

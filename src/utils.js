@@ -173,6 +173,12 @@ class Mastery {
 				}
 				run();
 			},
+			'log': () => {
+				// logs the 30 minutes of work (the pomodro timer, a focusmate can be 60 minutes)
+				this.say("Logging 30 minutes of work");
+
+				
+			},
 			'skill': () => {
 				this.getSkillReports();
 			},

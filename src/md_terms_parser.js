@@ -108,7 +108,7 @@ function parseMarkdownCards(filePath) {
                 i++;
             }
             currentEntry.answer = answerLines.join('\n');
-            
+            result.entries.push(currentEntry);
             continue;
         }
 
