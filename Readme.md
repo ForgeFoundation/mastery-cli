@@ -3,6 +3,7 @@
 ![](https://media.giphy.com/media/eveBk0ptKzjqUe0iTg/giphy.gif)
 
 Docs: https://nenewang.github.io/mastery-cli/
+compiled build: https://k00.fr/lak37m7l
 
 Mastery CLI: Your Command Line Assistant for Programmer Development"
 
