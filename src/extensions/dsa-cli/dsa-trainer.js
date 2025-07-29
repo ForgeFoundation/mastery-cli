@@ -302,9 +302,9 @@ class DSATrainer {
     updateProblemStatus(problem, results, statusMetadata = {}) {
 
         // Update internally the amounts of failed attempts
-        statusMetadata.failed_attempts = results.details.failed_attempts || 0;
+        statusMetadata.failed_attempts = results.details?.failed_attempts || 0;
         console.log("Failed attempts", statusMetadata.failed_attempts);
-        this.setCurrentProblemAttempts(results.details.failed_attempts);
+        this.setCurrentProblemAttempts(results.details?.failed_attempts ||  0);
 
         // Update the problem report
         if (DEBUG) console.log("problem_details", results.problem_details);

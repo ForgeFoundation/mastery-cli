@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { Term, DeckMask, TermStorage } = require('./structures.js');
 const { getDirAbsoluteUri } = require('./utils_functions.js');
+
+
 const path = require('path');
 
 
@@ -31,7 +33,7 @@ function parseMarkdownCards(filePath) {
 
         // New entry
         if (line.startsWith('####') || line.startsWith('###') || line.startsWith('##')) {
-           
+
             const header = line.replace(/^#+/, '').trim()
             currentEntry = {
                 header: header,
@@ -134,7 +136,7 @@ function parseMarkdownCards(filePath) {
         }
 
         i++;
-        last_line = line; 
+        last_line = line;
     }
 
     if (currentEntry) {
@@ -170,7 +172,7 @@ function parseMarkdownIntoDeck(filePath, { module_name = 'Markdown Terms Parser'
                 module_name: module_name,
                 category: filename.replace('.md', '').replace(/ /g, '').replace(/[^a-zA-Z]/g, '')
             });
-            // console.log("created new terms", term);
+        // console.log("created new terms", term);
         termsList.push(term);
     }
 
