@@ -23,8 +23,6 @@ Key Highlights:
 
 - Easily track personal project goals, such as daily commits.
 - Access over 150 offline programming problems with accompanying offline tests and a built-in compiler.
-- Seamlessly collect and sync progress across devices when connected to the internet.
-- Establish habit hooks, like integrating flashcards and math practice into your development cycle.
 - Utilize an offline algorithm that identifies weaknesses and generates quick flashcards for memory refresh.
 - Enjoy free flashcard decks covering Computer Science Architecture, Networking, AWS, System Design, Design Patterns, and more. Plus, easily share your flashcard decks.
 
@@ -39,6 +37,20 @@ mcli report
 
 - You need to install nvim for the dsa option to work
 - Eventually you would be able to select your own editor.
+
+
+Currently under development.
+- We are cleaning up the codebase, and adding more features.
+- Currently 100% offline. So that this can be used in corporate environments. (not sending any data to the cloud, and all is local)
+- We are removing unused libraries to keep it as clean as possible, some libraries use local ones that you might need to install using:
+
+```
+npm install file:custom_modules/node-json-db-1.0.1
+npm install file:custom_modules/terminal-charter-master
+```
+
+
+Setup your editor in `utils/dsa-cli/user_files/temp_settings.json` to use your preferred editor for DSA problems.
 
 
 ## Help
@@ -94,6 +106,12 @@ You will be able to see the progress of your skills, and the type of problems yo
 ```
 mcli skill
 ```
+
+
+To add a skill
+
+
+
 
 ### Data Structures and Algorithms 
 We have a collection of DSA problems that you can solve.

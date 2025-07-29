@@ -117,7 +117,7 @@ class MasteryDSAExtension extends ExtensionModel {
 			dsa: async () => {
 				if (flags.all) {
 					console.log("all")
-					const problem_response = await dsaTrainer.showMenuOfProblems();
+					const problem_response = await dsaTrainer.showMenuOfProblems({ md_pseudo_mode: true });
 					this.updateAlgorithmPerformance(problem_response);
 				} else {
 					const problem_response = await dsaTrainer.showRecommendedProblems({

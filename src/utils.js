@@ -231,8 +231,6 @@ class Mastery {
 
 
 	login = async () => {
-		// await axios.get(`${APIDICT.DEPLOYED_MAID}/account/missing_performance_today/${Settings.account_id ?? 1}`)
-
 
 		if (!Settings?.online) {
 			if (!Settings?.dev_mode) {

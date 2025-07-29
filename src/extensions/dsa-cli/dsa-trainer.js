@@ -6,7 +6,6 @@ const StorableReport = require('./StorableReport');
 const { getPromptDict } = require('./prompt');
 
 const constants = require('./constants');
-const axios = require('axios');
 const FormData = require('form-data');
 
 const { renderPromptDescription, get_random, getCurrentDateTimeIso } = require('./functions');
@@ -204,91 +203,7 @@ class DSATrainer {
 
 
     async postProblemSolution(problem, { attempts_timestamp = [], comments = [], comm = "" } = {}) {
-        const absoluteFilePath = this.problems_manager.absolute_problem_file_path;
-
-        const ACCOUNT_ID = Settings.account_id ?? 1;
-
-        const formData = new FormData();
-        formData.append('file', fs.createReadStream(absoluteFilePath), {
-            filename: `_${ACCOUNT_ID}_${problem.slug}_solution.js`,
-            contentType: 'text/javascript', // Set the content type to text/javascript
-        });
-
-        axios({
-            method: 'post',
-            url: this.uploadCodeFileUrl,
-            data: formData,
-            headers: {
-                ...formData.getHeaders(), // Include necessary headers for form data
-                'accept': 'application/json',
-            },
-        })
-            .then(response => {
-                // Handle the response here
-                if (response.status === 200) {
-                    const file_url = response.data.location;
-                    console.log('File uploaded successfully to ' + file_url);
-
-
-                    // Now post the metadata into 
-
-                    /** Metadata
-                     * {
-                        "comments": [
-                            "string"
-                        ],
-                        "code_url": "string",
-                        "language": "string",
-                        "date": "2023-10-03T17:57:26.591Z",
-                        "attempt_counts": 0,
-                        "attempt_timestamps": [
-                            "2023-10-03T17:57:26.591Z"
-                        ],
-                        "is_correct": true,
-                        "problem_slug": "string",
-                        "account_id": 0
-                        }
-                     */
-
-                    const metadata = {
-                        "comments": comments,
-                        "code_url": file_url,
-                        "language": "javascript",
-                        "date": getCurrentDateTimeIso(),
-                        "attempt_counts": attempts_timestamp.length,
-                        "attempt_timestamps": attempts_timestamp,
-                        "is_correct": true,
-                        "problem_slug": problem.slug,
-                        "account_id": ACCOUNT_ID
-                    };
-
-
-                    // console.log("Posting metadata", metadata,"to url", uploadCodeMetadataUrl)
-                    axios({
-                        method: 'post',
-                        url: this.uploadCodeMetadataUrl,
-                        data: metadata,
-                        headers: {
-                            'accept': 'application/json',
-                        },
-                    }).then(
-                        console.log("Metadata posted successfully", metadata)
-                    ).catch(
-                        error => {
-                            console.log("Error from metadata", error);
-                        }
-
-                    );
-
-
-                } else {
-                    console.error('File upload failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
+        
 
     }
 
@@ -302,9 +217,9 @@ class DSATrainer {
     updateProblemStatus(problem, results, statusMetadata = {}) {
 
         // Update internally the amounts of failed attempts
-        statusMetadata.failed_attempts = results.details?.failed_attempts || 0;
-        console.log("Failed attempts", statusMetadata.failed_attempts);
-        this.setCurrentProblemAttempts(results.details?.failed_attempts ||  0);
+        // statusMetadata.failed_attempts = results.details?.failed_attempts || 0;
+        // console.log("Failed attempts", statusMetadata.failed_attempts);
+        // this.setCurrentProblemAttempts(results.details?.failed_attempts ||  0);
 
         // Update the problem report
         if (DEBUG) console.log("problem_details", results.problem_details);
@@ -358,9 +273,13 @@ class DSATrainer {
         statusMetadata.md_pseudo_mode = md_pseudo_mode;
 
 
-
+        let looped_times =0;
         while (!did_pass_all_tests && try_until_solved) {
-
+            looped_times++;
+            if (looped_times > 10) {
+                console.log("Looped too many times, breaking out of the loop");
+                break;
+            }
             if (status == constants.ProblemStatus.aborted) {
                 statusMetadata.status = constants.ProblemStatus.aborted;
                 return statusMetadata;
@@ -649,7 +568,7 @@ class DSATrainer {
 
             Object.assign(selectable_choices_prompt, {
                 'Submit': async () => {
-                    if(md_pseudo_mode){
+                    if (md_pseudo_mode) {
                         console.log("Storing in stash");
                     }
                     if (!did_pass_all_tests_before) {
@@ -807,9 +726,13 @@ class DSATrainer {
         // return await this.openAndTest(problem);
 
         const problem = getProblem(problem_selected);
+        let is_new_problem = true;
+        try {
 
-        // const is_new_problem = problem_selected != current_problem_prompt;
-        const is_new_problem = true;
+             is_new_problem = problem_selected != current_problem_prompt;
+        } catch (e) {
+            console.log("Error getting problem", e);
+        }
         const problem_response = await this.solveProblem(problem, { populate_problem: is_new_problem, md_pseudo_mode: md_pseudo_mode });
 
         problem_response.is_problem_solved = problem_response.status == constants.ProblemStatus.solved;
