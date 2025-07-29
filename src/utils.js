@@ -368,12 +368,18 @@ class Mastery {
 		try {
 			await localStorageInstance.load();
 
+			// This line is surprisingly important to ensure the localStorageInstance is loaded before proceeding.
+			console.log("\nreports loaded\n", localStorageInstance.absolute_uri);
+			
 			const feat_rules = getObjectiveFeatures();
-
+			
 			// Use built-in day and week methods
 			const today_scores = localStorageInstance.get_day_logs({ windows_n: 0 }).selected_date;
 			const yesterday_scores = localStorageInstance.get_day_logs({ windows_n: 1 }).selected_date;
 			const week_scores = localStorageInstance.get_week_log();
+			// console.log("Today Scores", today_scores);
+			// console.log("Yesterday Scores", yesterday_scores);
+			// console.log("Week Scores", week_scores);
 
 			let userPerformanceData = {
 				today: {},
