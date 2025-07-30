@@ -273,7 +273,7 @@ class DSATrainer {
         statusMetadata.md_pseudo_mode = md_pseudo_mode;
 
 
-        let looped_times =0;
+        let looped_times = 0;
         while (!did_pass_all_tests && try_until_solved) {
             looped_times++;
             if (looped_times > 10) {
@@ -295,14 +295,18 @@ class DSATrainer {
             }
 
             else if (status == constants.ProblemStatus.unsolved) {
-                continue; // Try again
+                // Try again - call openAndTest again
+                const results = await this.openAndTest(problem, { failed_attempts: statusMetadata.failed_attempts, md_pseudo_mode: md_pseudo_mode });
+                status = results.status;
+                this.updateProblemStatus(problem, results, statusMetadata);
             }
-
-            const results = await this.openAndTest(problem, { failed_attempts: statusMetadata.failed_attempts, md_pseudo_mode: md_pseudo_mode });
-            status = results.status;
-            this.updateProblemStatus(problem, results, statusMetadata);
-
         }
+        
+        // If we exit the loop without solving, set the final status
+        if (!statusMetadata.status) {
+            statusMetadata.status = status;
+        }
+        return statusMetadata;
     }
 
     /**
@@ -425,7 +429,7 @@ class DSATrainer {
             "modify - Open Code Editor": async () => {
                 question_state_flag = true;
                 await this.openProblemMetadataInTerminal(problem, { open_problem_temporal: true, md_pseudo_mode: md_pseudo_mode }); //By default opens the temrporal probelm file
-
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
             "force approval ": async () => {
                 question_state_flag = false;
@@ -457,28 +461,26 @@ class DSATrainer {
                     hintsGiven.push(hintsMssage);
                 }
                 question_state_flag = true;
-
-
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
             "copy Link - Original Leetcode/available repository link": async () => {
                 question_state_flag = true;
                 // console.log(problem_details)
                 console.log("Copy Link: ", problem_details?.link ?? "");
-
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             }
             ,
             "solution - reveal/edit solution": async () => {
                 question_state_flag = true;
                 this.openProblemMetadataInTerminal(problem, { open_problem_temporal: false, open_solution: true });
-
-                // return constants.ProblemStatus.unsolved;
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
             "reset to base template": async () => {
                 question_state_flag = true;
                 // Repopulates the 
                 // this.problems_manager.repopulateCode(problem.slug);
                 this.problems_manager.populateTemplate(problem);
-                // return constants.ProblemStatus.unsolved;
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
 
             'quit': async () => {
@@ -494,12 +496,14 @@ class DSATrainer {
 
                 question_state_flag = true;
                 this.openProblemMetadataInTerminal(problem, { open_problem_temporal: false, open_basecode: true });
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
             "markdown - reveal/edit markdown prompt": async () => {
                 // Open the problem's base
 
                 question_state_flag = true;
                 this.openProblemMetadataInTerminal(problem, { open_problem_temporal: false, open_markdown: true });
+                return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
             },
             // "Open test cases": async () => {
             //     question_state_flag = true;
@@ -545,7 +549,7 @@ class DSATrainer {
                     // console.log("DEBUG | Cloze problems: ", cloze_problems);
                     if (cloze_problems.length == 0) {
                         console.log("No cloze problems found for this problem");
-                        return
+                        return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
                     }
 
                     const selected_cloze_problem = get_random(cloze_problems);
@@ -554,13 +558,16 @@ class DSATrainer {
                     console.log(" ==> CLOZE PROBLEM HAS BEEN COPIED TO  CURRENT PROBLEM <==");
                     // Open using modify to update the version
                     await this.openProblemMetadataInTerminal(problem, { open_problem_temporal: true });
-
-
+                    return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
                 },
             });
         }
 
-        let res = constants.ProblemStatus.unsolved;
+        let res = { 
+            status: constants.ProblemStatus.unsolved, 
+            details: { failed_attempts: failed_attempts }, 
+            problem_details: problem_details 
+        };
 
         const selectable_choices_prompt = {};
         // Remove Submit, if test never passed before
@@ -573,15 +580,12 @@ class DSATrainer {
                     }
                     if (!did_pass_all_tests_before) {
                         console.log("You must pass all tests before submitting!");
-                        // return false;
                         this.postProblemSolution(problem, { attempts_timestamp: attempts_timestamp, comments: comments });
-
+                        return { status: constants.ProblemStatus.unsolved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
                     } else {
                         console.log("Submission running", constants.ProblemStatus.solved);
                         question_state_flag = false;
-
                         return { status: constants.ProblemStatus.solved, details: { failed_attempts: failed_attempts }, problem_details: problem_details };
-
                     }
                 }
             })
