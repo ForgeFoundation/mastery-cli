@@ -86,10 +86,8 @@ class MasteryDSAExtension extends ExtensionModel {
 	}
 
 	updateAlgorithmPerformance = (problem_response, { performance_feature = "algo" } = {}) => {
-		if (Settings.dev_mode) console.log("updateAlgorithmPerformance: ", problem_response);
 		
 		const dsa_is_correct = problem_response.is_problem_solved;
-		// console.log("problem_response", problem_response)
 		if (dsa_is_correct) {
 			(async () => {
 				this.masteryManager.logSkillExperience(
@@ -116,7 +114,6 @@ class MasteryDSAExtension extends ExtensionModel {
 		return {
 			dsa: async () => {
 				if (flags.all) {
-					console.log("all")
 					const problem_response = await dsaTrainer.showMenuOfProblems({ md_pseudo_mode: true });
 					this.updateAlgorithmPerformance(problem_response);
 				} else {
@@ -128,7 +125,6 @@ class MasteryDSAExtension extends ExtensionModel {
 			},
 			mdsa: async () => {
 				if (flags.all) {
-					console.log("all")
 					const problem_response = await dsaTrainer.showMenuOfProblems({
 						md_pseudo_mode: true,
 					});
@@ -143,7 +139,6 @@ class MasteryDSAExtension extends ExtensionModel {
 			},
 			cloze: async () => {
 				const problem_response = await dsaTrainer.openRandomClozeDSAProblem();
-				console.log("problem_response of cloze", problem_response)
 			},
 		}
 	}

@@ -14,7 +14,6 @@ const fs = require('fs');
 const Settings = require('../../settings');
 
 
-const DEBUG = false;
 
 /**
  * @class DSATrainer - Responsible of presenting problems, and interacting with problems managers, settings, and others charts and user data visualization
@@ -179,16 +178,10 @@ class DSATrainer {
     }
 
     async openRandomClozeDSAProblem({ md_pseudo_mode = false } = {}) {
-        // const _ = await this.problemReport.getReport();
         await this.loaded_problem_manager;
         const selectedClozeProblem = this.problems_manager.getRandomProblemSlugWithCloze();
-        // console.log("selectedClozeProblem", selectedClozeProblem);
-        // console.log("problem manager problems?", this.problems_manager.problems)
         const problem = this.problems_manager.getProblem(selectedClozeProblem.problem_slug);
-        // console.log("problem | problem received", problem);
 
-        // Populate with that problem slug
-        // this.problems_manager.copyFileToTemp(selectedClozeProblem.file_path, { base: constants.PATHS.base_cloze });
         problem.is_cloze = true;
         const problem_response = await this.solveProblem(problem,
             { base: constants.PATHS.base_cloze, populate_with_cloze_filepath: selectedClozeProblem.file_path, md_pseudo_mode: md_pseudo_mode });
@@ -212,13 +205,8 @@ class DSATrainer {
      */
     updateProblemStatus(problem, results, statusMetadata = {}) {
 
-        // Update internally the amounts of failed attempts
-        // statusMetadata.failed_attempts = results.details?.failed_attempts || 0;
-        // console.log("Failed attempts", statusMetadata.failed_attempts);
-        // this.setCurrentProblemAttempts(results.details?.failed_attempts ||  0);
 
         // Update the problem report
-        if (DEBUG) console.log("problem_details", results.problem_details);
         statusMetadata.problem_details = results.problem_details;
 
         // Score to increase given this problem
@@ -228,9 +216,7 @@ class DSATrainer {
             [constants.difficulty.hard]: 4
         };
 
-        // Lowercase
         const difficulty_l = problem.difficulty.toLowerCase();
-        if (DEBUG) console.log("problem.difficulty being increased", problem.difficulty, difficulty_l, scoreGivenDifficulty[problem.difficulty], scoreGivenDifficulty)
 
         statusMetadata.score_to_increase = scoreGivenDifficulty[difficulty_l] || 0;
 
@@ -283,7 +269,6 @@ class DSATrainer {
 
             else if (status == constants.ProblemStatus.solved) {
                 this.problemReport.increaseAnswerFor(problem.slug);
-                if (DEBUG) { console.log("Times the problem was solved.", this.problemReport.getAnswerFor(problem.slug)); }
                 this.cleanCurrentProblem();
                 did_pass_all_tests = true;
                 statusMetadata.status = constants.ProblemStatus.solved;
@@ -336,7 +321,6 @@ class DSATrainer {
 
 
 
-        if (DEBUG) console.log("Problem prompt selected: ", promblem_prompt, "for problem", problem, "cloze?", problem.is_cloze);
         renderPromptDescription(promblem_prompt, problem_details, { is_cloze: problem.is_cloze ?? false });
 
         const editor_instruction = this.user_settings.common_editors[this.user_settings.editor];

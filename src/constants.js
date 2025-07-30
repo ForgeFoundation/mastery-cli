@@ -6,7 +6,6 @@ const { CURRENCY_SIMBOLS } = require('./terms_data/currency.js');
 const path = require("path");
 const url = require('url');
 
-// console.log("CURRENCY_SIMBOLS", CURRENCY_SIMBOLS);
 /**
  * 
  * @param {List: any} list A lit of any object
