@@ -1,82 +1,150 @@
-# Mastery CLI 🎯
+# Mastery CLI
 
-**A beginner-friendly command-line tool for learning programming concepts through flashcards and algorithm practice**
+![](https://media.giphy.com/media/eveBk0ptKzjqUe0iTg/giphy.gif)
 
-Turn your study notes into interactive flashcards and practice data structures & algorithms - all from your terminal!
+Docs: https://nenewang.github.io/mastery-cli/
+compiled build: https://k00.fr/lak37m7l
 
-## ✨ What Can You Do?
+Mastery CLI: Your Command Line Assistant for Programmer Development"
 
-- 📚 **Convert Markdown notes to flashcards** - Turn your study notes into interactive learning sessions
-- 🧠 **Practice algorithms & data structures** - Solve coding problems step by step
-- 📊 **Track your progress** - See your learning stats and improvement over time
-- ⚡ **Quick setup** - Get started in minutes
+Mastery CLI is a comprehensive tool designed to boost your programming skills. It features flashcards, DSA practice, statistics, and habit hooks. For instance, every commit now triggers a random flashcard or suggests a DSA problem to solve, fostering continuous learning.
 
-## 🚀 Quick Start
 
-### 1. Install
-```bash
+
+
+| features                                                                | img                                   |
+| ----------------------------------------------------------------------- | ------------------------------------- |
+| Convert your Markdown Notes into Flashcards                             | ![alt text](img/markdown-toimage.png) |
+| Upgrade your skills, and keep record of your progress with Mastery CLI. | ![alt text](img/progress-record.png)      |
+
+
+
+Key Highlights:
+
+- Easily track personal project goals, such as daily commits.
+- Access over 150 offline programming problems with accompanying offline tests and a built-in compiler.
+- Utilize an offline algorithm that identifies weaknesses and generates quick flashcards for memory refresh.
+- Enjoy free flashcard decks covering Computer Science Architecture, Networking, AWS, System Design, Design Patterns, and more. Plus, easily share your flashcard decks.
+
+
+## Install and Test.
+```
 npm install -g mastery-cli
+mcli report
+mcli quiz
+mcli report
 ```
 
-### 2. Run Your First Flashcard Session
-```bash
-mastery term
+- You need to install nvim for the dsa option to work
+- Eventually you would be able to select your own editor.
+
+
+Currently under development.
+- We are cleaning up the codebase, and adding more features.
+- Currently 100% offline. So that this can be used in corporate environments. (not sending any data to the cloud, and all is local)
+- We are removing unused libraries to keep it as clean as possible, some libraries use local ones that you might need to install using:
+
+```
+npm install file:custom_modules/node-json-db-1.0.1
+npm install file:custom_modules/terminal-charter-master
 ```
 
-### 3. Practice Algorithms
-```bash
-mastery dsa
+
+Setup your editor in `utils/dsa-cli/user_files/temp_settings.json` to use your preferred editor for DSA problems.
+
+
+## Help
+
+We support multiple ways to call the cli, for instance, you can use `mastery-cli`, `mastery`, or `mcli` to access the tool. 
+
+Supported calls:
+
+```
+mcli
+mastery
+m-cli
 ```
 
-### 4. See All Commands
-```bash
-mastery --help
+### Settings.
+
+Change the editor in 
+
+```
+utils/dsa-cli/user_files/temp_settings.json
 ```
 
-## 📋 Available Commands
+## Usage
 
-| Command | Description | Perfect For |
-|---------|-------------|-------------|
-| `mastery term` | Study flashcards from your notes | Learning new concepts |
-| `mastery dsa` | Practice coding problems | Algorithm interviews |
-| `mastery quiz` | Mixed quiz session | Quick review |
-| `mastery report` | View your progress stats | Tracking improvement |
-| `mastery settings` | Configure your preferences | Customization |
+Commiting a code and pushing it to HEAD
 
-
-
-## 📖 How to Create Flashcards
-
-Create a `.md` file with this format:
-
-```markdown
-# My Study Notes
-
-## JavaScript Concepts
-
-### What is a closure?
-A function that has access to variables in its outer scope even after the outer function returns.
-
-### What is hoisting?
-JavaScript's behavior of moving declarations to the top of their scope during compilation.
+```
+mcli coa "Commit message"
 ```
 
-Then run `mastery term` to study these as flashcards!
 
-## 🎯 Algorithm Practice
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzYzYzU5NWJiMjNhNThkYzBkNTJlM2MxNjFjZjdiNzJiMTZhMGVmOSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/JavdJQ8YjfQyOq0Cfy/giphy.gif)
 
-The tool includes hundreds of coding problems:
-- **Easy to Hard difficulty levels**
-- **Step-by-step hints**
-- **Multiple programming languages**
-- **Progress tracking**
+Reporting:
 
-## ⚙️ Configuration
+```
+mcli report
+```
 
-First time? The tool will create a `settings.json` file for you. You can customize:
-- Study session length
-- Difficulty preferences  
-- Progress tracking options
+
+Help 
+
+```
+mcli --help
+```
+
+
+## Skills Integration
+
+Now you can track locally the type of cards you are studying, and the type of problems you are solving.
+You will be able to see the progress of your skills, and the type of problems you are solving.
+
+```
+mcli skill
+```
+
+
+To add a skill
+
+
+
+
+### Data Structures and Algorithms 
+We have a collection of DSA problems that you can solve.
+
+View DSA problems:
+```
+mcli dsa
+```
+
+- We keep track of solved problems, as well as new problems.
+
+
+
+
+View all DSA Problems
+
+```
+mcli dsa --all
+```
+
+### Flashcards
+
+```
+mcli term
+```
+
+Math Problems:
+
+```
+mcli math
+```
+
+
 
 ## 🆘 Need Help?
 
