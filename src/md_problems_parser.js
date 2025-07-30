@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { parseMarkdownProblemsFromFolder } = require('./parser');
 const { Problem, ProblemStorage } = require('./structures');
 const { getDirAbsoluteUri } = require('./utils_functions');
 

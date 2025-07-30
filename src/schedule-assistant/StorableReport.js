@@ -24,14 +24,18 @@ class StorableReport {
         if (!this.report?.[key]) {
             this.report[key] = 0;
         }
-        this.report?.[key]++;
+        if (this.report?.[key] !== undefined) {
+            this.report[key]++;
+        }
     }
 
     decreaseAnswerFor(key) {
         if (!this.report?.[key]) {
             this.report[key] = 0;
         }
-        this.report?.[key]--;
+        if (this.report?.[key] !== undefined) {
+            this.report[key]--;
+        }
     }
 
     fixCheckAnswers(listOfChekBoxesKeys) {

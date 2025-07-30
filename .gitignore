@@ -1,5 +1,6 @@
 */archive/*
-
+.claude/**
+claude.md
 utils/dsa-cli/user_files/temp_settings.json
 utils/dsa-cli/user_files/temp_problem.js
 # NPM #

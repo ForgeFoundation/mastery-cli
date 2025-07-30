@@ -1,10 +1,10 @@
-class soupServings {
+class SoupServingsSolution {
   solve(n) {
      return soupServings(n)
   }
 }
 
-module.exports = { Problem: soupServings };
+module.exports = { Problem: SoupServingsSolution };
 
 function soupServings(n) {
     const m = Math.ceil(n / 25);

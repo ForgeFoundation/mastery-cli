@@ -1,7 +1,7 @@
 class ConstructQuadTree {
-	solve(grid, 0, 0, grid.length);
-	// Your code here
-
+	solve(grid) {
+		// Your code here
+		// Example: solve(grid, 0, 0, grid.length);
 	}
 }
 
