@@ -1,4 +1,19 @@
 
+/**
+ * DSA CLI Extension - Coding practice and algorithm learning
+ * 
+ * This extension provides all the commands for practicing data structures
+ * and algorithms. Perfect for:
+ * - Job interview preparation
+ * - Learning new programming concepts
+ * - Daily coding practice
+ * 
+ * Available commands:
+ * - dsa: Practice recommended problems
+ * - mdsa: Practice in markdown/pseudocode mode
+ * - cloze: Fill-in-the-blank coding exercises
+ */
+
 const { increasePerformance } = require('../../utils');
 const { Toggle, Confirm, prompt, AutoComplete, Survey, Input } = require('enquirer');
 const DSATrainer = require('./dsa-trainer.js');

@@ -10,9 +10,9 @@
 		"mcli": "index.js"
 	},
 	"author": {
-		"name": "nenwang",
-		"email": "wangnelson2@gmail.com",
-		"url": "https://github.com/n3wang"
+		"name": "mastery-cli",
+		"email": "info@example.com",
+		"url": "https://github.com/mastery-cli/mastery-cli"
 	},
 	"keywords": [
 		"mastery-cli"

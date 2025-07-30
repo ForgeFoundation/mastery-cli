@@ -1,3 +1,16 @@
+/**
+ * Core Utilities for Mastery CLI
+ * 
+ * This file contains the main Mastery class and utility functions that power
+ * the entire learning system. Think of this as the brain of the application!
+ * 
+ * For beginners: This handles:
+ * - Progress tracking and reporting
+ * - Flashcard and quiz sessions  
+ * - Command routing and execution
+ * - Local data storage and statistics
+ */
+
 const chalk = require('chalk');
 const clipboard = require('copy-paste')
 
@@ -124,6 +137,16 @@ function withOnlineCheck(fn) {
 
 
 
+/**
+ * Mastery - The main learning management system
+ * 
+ * This is the core class that manages your entire learning experience.
+ * For beginners: Think of this as your personal study assistant that:
+ * - Tracks what you've learned and when
+ * - Suggests what to study next
+ * - Handles all the different study modes (flashcards, coding, quizzes)
+ * - Saves your progress automatically
+ */
 class Mastery {
 
 	constructor(Settings = {}, masterDeck, name = MAID_NAME, headerColor = '#1da1f2', clearOnTalk = false) {
@@ -131,8 +154,9 @@ class Mastery {
 		this.name = name;
 		this.headerColor = headerColor;
 		this.clearOnTalk = clearOnTalk;
-		this.missing_features_today = []; //To be populated when required.
+		this.missing_features_today = []; // Features you haven't practiced today
 
+		// The main quiz system that handles flashcards and algorithm problems
 		this.mQuizer = new QuizzerWithDSA(constants.qmathformulas, constants.qmathenabled, masterDeck, this);
 
 		this.populateMissingReport = withOnlineCheck(this.populateMissingReport.bind(this));
@@ -144,10 +168,12 @@ class Mastery {
 		this.services = withOnlineCheck(this.services.bind(this));
 
 
+		// Command handlers - these map command names to their functions
+		// For beginners: When you type 'mastery quiz', it calls the 'quiz' handler
 		this.commandHandlers = {
 			'hello': () => { this.say('Hello!') },
 			'code': () => { this.tellCurrentDirectory() },
-			'coa': () => {
+			'coa': () => { // Commit, add, and push code changes
 
 				const run = async () => {
 
@@ -173,45 +199,42 @@ class Mastery {
 				}
 				run();
 			},
-			'log': () => {
-				// logs the 30 minutes of work (the pomodro timer, a focusmate can be 60 minutes)
+			'log': () => { // Log work session (like a pomodoro timer)
 				this.say("Logging 30 minutes of work");
-
-				
 			},
-			'skill': () => {
+			'skill': () => { // Show skill progress reports
 				this.getSkillReports();
 			},
 			'services': () => { this.services() },
-			'math': () => { this.mQuizer.ask_math_question() },
-			'quiz': () => { this.mQuizer.askQuestion() },
-			'imath': () => { this.increasePerformance('math_ss') },
-			'term': () => { this.mQuizer.pick_and_ask_term_question() },
-			'clean': () => { this.askToClean() },
-			'ses': () => { this.mQuizer.study_session() },
-			'lastses': () => {
+			'math': () => { this.mQuizer.ask_math_question() }, // Practice math problems
+			'quiz': () => { this.mQuizer.askQuestion() }, // Mixed quiz session
+			'imath': () => { this.increasePerformance('math_ss') }, // Increase math score
+			'term': () => { this.mQuizer.pick_and_ask_term_question() }, // Flashcard study
+			'clean': () => { this.askToClean() }, // Clear terminal screen
+			'ses': () => { this.mQuizer.study_session() }, // Study session
+			'lastses': () => { // Study session in reverse order
 				this.mQuizer.study_session(
 					{ reverse: true }
 				)
 			},
-			'cses': () => { this.mQuizer.cloze_study_session() },
-			'mcses': () => {
+			'cses': () => { this.mQuizer.cloze_study_session() }, // Fill-in-the-blank session
+			'mcses': () => { // Markdown cloze session (pseudocode mode)
 				this.mQuizer.cloze_study_session({
 					md_pseudo_mode: true
 				})
 			},
-			'amses': () => { this.mQuizer.algorithmic_study_session() },
-			'mamses': () => {
+			'amses': () => { this.mQuizer.algorithmic_study_session() }, // Algorithm session
+			'mamses': () => { // Markdown algorithm session (pseudocode mode)
 				this.mQuizer.algorithmic_study_session({
 					md_pseudo_mode: true
 				})
 			},
-			'report': () => {
+			'report': () => { // Generate comprehensive progress report
 				this.getSkillReports();
 				this.generateOfflinePerformanceReport({ localStorageInstance, version: "tables" })
 			},
-			'entries': () => {
-				// take the next parameter as the target to search.
+			'entries': () => { // Search for specific learning entries
+				// Get skill name and term from command line arguments
 				let skill_name = process.argv[3] ?? "";
 				let deck_term = process.argv[4] ?? "";
 

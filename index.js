@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * mastery-cli
- * Life is a game, and the game is to be the best version of yourself
- *
- * @author Nelson <github.com/neneWang>
+ * Mastery CLI - A beginner-friendly learning tool
+ * 
+ * Transform your study notes into interactive flashcards and practice 
+ * coding problems right from your terminal!
+ * 
+ * Quick start:
+ * - mastery term    : Study flashcards
+ * - mastery dsa     : Practice coding problems  
+ * - mastery --help  : See all commands
  */
 
 const cli = require('./src/cli');

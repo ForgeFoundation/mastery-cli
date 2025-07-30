@@ -1,147 +1,121 @@
-# Mastery CLI
+# Mastery CLI 🎯
 
-![](https://media.giphy.com/media/eveBk0ptKzjqUe0iTg/giphy.gif)
+**A beginner-friendly command-line tool for learning programming concepts through flashcards and algorithm practice**
 
-Docs: https://nenewang.github.io/mastery-cli/
-compiled build: https://k00.fr/lak37m7l
+Turn your study notes into interactive flashcards and practice data structures & algorithms - all from your terminal!
 
-Mastery CLI: Your Command Line Assistant for Programmer Development"
+## ✨ What Can You Do?
 
-Mastery CLI is a comprehensive tool designed to boost your programming skills. It features flashcards, DSA practice, statistics, and habit hooks. For instance, every commit now triggers a random flashcard or suggests a DSA problem to solve, fostering continuous learning.
+- 📚 **Convert Markdown notes to flashcards** - Turn your study notes into interactive learning sessions
+- 🧠 **Practice algorithms & data structures** - Solve coding problems step by step
+- 📊 **Track your progress** - See your learning stats and improvement over time
+- ⚡ **Quick setup** - Get started in minutes
 
+## 🚀 Quick Start
 
-
-
-| features                                                                | img                                   |
-| ----------------------------------------------------------------------- | ------------------------------------- |
-| Convert your Markdown Notes into Flashcards                             | ![alt text](img/markdown-toimage.png) |
-| Upgrade your skills, and keep record of your progress with Mastery CLI. | ![alt text](img/progress-record.png)      |
-
-
-
-Key Highlights:
-
-- Easily track personal project goals, such as daily commits.
-- Access over 150 offline programming problems with accompanying offline tests and a built-in compiler.
-- Utilize an offline algorithm that identifies weaknesses and generates quick flashcards for memory refresh.
-- Enjoy free flashcard decks covering Computer Science Architecture, Networking, AWS, System Design, Design Patterns, and more. Plus, easily share your flashcard decks.
-
-
-## Install and Test.
-```
+### 1. Install
+```bash
 npm install -g mastery-cli
-mcli report
-mcli quiz
-mcli report
 ```
 
-- You need to install nvim for the dsa option to work
-- Eventually you would be able to select your own editor.
-
-
-Currently under development.
-- We are cleaning up the codebase, and adding more features.
-- Currently 100% offline. So that this can be used in corporate environments. (not sending any data to the cloud, and all is local)
-- We are removing unused libraries to keep it as clean as possible, some libraries use local ones that you might need to install using:
-
-```
-npm install file:custom_modules/node-json-db-1.0.1
-npm install file:custom_modules/terminal-charter-master
+### 2. Run Your First Flashcard Session
+```bash
+mastery term
 ```
 
-
-Setup your editor in `utils/dsa-cli/user_files/temp_settings.json` to use your preferred editor for DSA problems.
-
-
-## Help
-
-We support multiple ways to call the cli, for instance, you can use `mastery-cli`, `mastery`, or `mcli` to access the tool. 
-
-Supported calls:
-
-```
-mcli
-mastery
-m-cli
+### 3. Practice Algorithms
+```bash
+mastery dsa
 ```
 
-### Settings.
-
-Change the editor in 
-
-```
-utils/dsa-cli/user_files/temp_settings.json
+### 4. See All Commands
+```bash
+mastery --help
 ```
 
-## Usage
+## 📋 Available Commands
 
-Commiting a code and pushing it to HEAD
-
-```
-mcli coa "Commit message"
-```
-
-
-![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzYzYzU5NWJiMjNhNThkYzBkNTJlM2MxNjFjZjdiNzJiMTZhMGVmOSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/JavdJQ8YjfQyOq0Cfy/giphy.gif)
-
-Reporting:
-
-```
-mcli report
-```
+| Command | Description | Perfect For |
+|---------|-------------|-------------|
+| `mastery term` | Study flashcards from your notes | Learning new concepts |
+| `mastery dsa` | Practice coding problems | Algorithm interviews |
+| `mastery quiz` | Mixed quiz session | Quick review |
+| `mastery report` | View your progress stats | Tracking improvement |
+| `mastery settings` | Configure your preferences | Customization |
 
 
-Help 
 
-```
-mcli --help
-```
+## 📖 How to Create Flashcards
 
+Create a `.md` file with this format:
 
-## Skills Integration
+```markdown
+# My Study Notes
 
-Now you can track locally the type of cards you are studying, and the type of problems you are solving.
-You will be able to see the progress of your skills, and the type of problems you are solving.
+## JavaScript Concepts
 
-```
-mcli skill
+### What is a closure?
+A function that has access to variables in its outer scope even after the outer function returns.
+
+### What is hoisting?
+JavaScript's behavior of moving declarations to the top of their scope during compilation.
 ```
 
+Then run `mastery term` to study these as flashcards!
 
-To add a skill
+## 🎯 Algorithm Practice
 
+The tool includes hundreds of coding problems:
+- **Easy to Hard difficulty levels**
+- **Step-by-step hints**
+- **Multiple programming languages**
+- **Progress tracking**
 
+## ⚙️ Configuration
 
+First time? The tool will create a `settings.json` file for you. You can customize:
+- Study session length
+- Difficulty preferences  
+- Progress tracking options
 
-### Data Structures and Algorithms 
-We have a collection of DSA problems that you can solve.
+## 🆘 Need Help?
 
-View DSA problems:
+- Run `mastery --help` for all commands
+- Each command has detailed prompts to guide you
+- Settings are explained when you first run the tool
+
+## 🎓 Perfect For
+
+- **Programming students** learning new concepts
+- **Job seekers** preparing for technical interviews  
+- **Developers** wanting to improve their skills
+- **Anyone** who learns better with spaced repetition
+
+## 🔧 For Developers
+
+Want to contribute or understand the code better?
+
+### Project Structure
 ```
-mcli dsa
+src/
+├── extensions/          # Feature modules
+│   └── dsa-cli/        # Algorithm practice features
+├── terms_data/         # Built-in flashcard content
+├── user_data/          # Your personal settings and progress
+└── utils/              # Helper functions
 ```
 
-- We keep track of solved problems, as well as new problems.
+### Key Files
+- `index.js` - Main entry point
+- `src/constants.js` - Configuration constants
+- `src/extensions/dsa-cli/` - All algorithm-related code
+- `src/user_data/settings.json` - User preferences
 
+### Adding New Features
+1. Create a new extension in `src/extensions/`
+2. Export your commands from the extension
+3. The main CLI will automatically discover them
 
+---
 
-
-View all DSA Problems
-
-```
-mcli dsa --all
-```
-
-### Flashcards
-
-```
-mcli term
-```
-
-Math Problems:
-
-```
-mcli math
-```
-
-
+**Ready to level up your programming skills? Start with `mastery term` and begin your learning journey! 🚀**

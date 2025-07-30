@@ -5,9 +5,7 @@
   "quiz_enabled": [
     "term"
   ],
-  "external_term_modules": [
-    "E:\\Documents\\obsidian\\general-docs-public\\4 - academia-project\\K1 - cfa"
-  ],
+  "external_term_modules": [],
   "dsa_language_mode": "PSEUDOCODE",
   "terms_force_mode_cards": 3,
   "blog_special_commits": true,
@@ -32,7 +30,7 @@
   "ask_quiz_when_commit": true,
   "ask_if_algo_missing_when_commit": true,
   "show_past_commits_features_after_quiz": true,
-  "journal_notes": "Obsess about your current projects. Dont try to seek for new ones. Focus on maximizing learning for the current project. \nDon't learn something new until the current project is maximized. \nMoney will come naturally when you have strong craftmanship. be so good, that you wont be ignored.",
+  "journal_notes": "Focus on continuous learning and skill improvement. Master your current projects before taking on new ones.",
   "report_show": {
     "performance_summary": true,
     "weather": false,

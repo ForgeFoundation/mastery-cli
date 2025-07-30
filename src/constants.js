@@ -1,3 +1,14 @@
+/**
+ * Constants and Configuration for Mastery CLI
+ * 
+ * This file contains all the fixed values and settings that the app uses.
+ * For beginners: Think of this as the app's "settings database" that stores:
+ * - Color themes and styling
+ * - Default values and limits
+ * - Helper functions used throughout the app
+ * - Built-in study content (math formulas, terminology, etc.)
+ */
+
 const { qmathformulas } = require('./terms_data/math_formulas.js');
 const { termJson } = require('./terms_data/terms.js');
 const { Term, Terminology, TermStorage } = require('./structures.js');
@@ -7,30 +18,29 @@ const path = require("path");
 const url = require('url');
 
 /**
- * 
- * @param {List: any} list A lit of any object
- * @param {int: count} count The number of random objects to pick from the list. Default is 1.
- * @returns any # picks the object and returns it. | If however the specified count of random objects is greater than the list, then it will return a list of random elements of that size.
+ * Get a random item from a list
+ * For beginners: This picks one random item from any list you give it
+ * @param {Array} list - Any array of items
+ * @returns {any} - One random item from the list
  */
 function get_random(list) {
     return list[Math.floor((Math.random() * list.length))];
 }
 
 /**
- * 
- * @param {List: any} list A lit of any object
- * @param {int} count The number of random objects to pick from the list. Default is 1.
- * @returns {List: any} # picks the object and returns it. | If however the specified count of random objects is greater than the list, then it will return a list of random elements of that size.
+ * Get multiple random items from a list
+ * For beginners: This picks several random items from a list
+ * @param {Array} list - Any array of items
+ * @param {Object} options - Configuration options
+ * @param {number} options.count - How many random items to pick (default: 1)
+ * @returns {Array} - An array of random items from the original list
  */
 function get_random_of_size(list, { count = 1 } = {}) {
-
     const listOfRandomProblems = [];
     for (let i = 0; i < count; i++) {
         listOfRandomProblems.push(list[Math.floor((Math.random() * list.length))]);
     }
-
     return listOfRandomProblems;
-
 }
 const MASTERY_MANAGER_NAME = "MCLI";
 

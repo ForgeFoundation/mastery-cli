@@ -16,7 +16,16 @@ const Settings = require('../../settings');
 
 
 /**
- * @class DSATrainer - Responsible of presenting problems, and interacting with problems managers, settings, and others charts and user data visualization
+ * DSATrainer - The main class for coding practice and algorithm learning
+ * 
+ * This class helps you:
+ * - Practice coding problems step by step
+ * - Track your progress on different algorithms
+ * - Get personalized problem recommendations
+ * - Study with interactive cloze deletion exercises
+ * 
+ * For beginners: Think of this as your personal coding tutor that 
+ * remembers what you've learned and suggests what to study next!
  */
 class DSATrainer {
 
