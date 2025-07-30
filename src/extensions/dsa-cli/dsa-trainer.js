@@ -6,7 +6,6 @@ const StorableReport = require('./StorableReport');
 const { getPromptDict } = require('./prompt');
 
 const constants = require('./constants');
-const FormData = require('form-data');
 
 const { renderPromptDescription, get_random, getCurrentDateTimeIso } = require('./functions');
 const { Toggle, AutoComplete, Input } = require('enquirer');
@@ -42,7 +41,6 @@ class DSATrainer {
          * 
          * @property {ProblemMetaData[]} first_non_only_hard_left_category_non_hard_problems - A list of problems that are not completed yet, and are not hard
          * @property {ProblemMetaData[]} completed_problems_sorted_by_times_completed - A list of problems that are not completed yet, sorted by the number of times they have been completed
-         * @property {String} uploadCodeFileUrl - The url to upload the code file
          */
         this.settings_manager = new SettingsManager();
         this.problems_manager = new ProblemsManager({ skip_problems: skip_problems });
@@ -59,8 +57,6 @@ class DSATrainer {
         this.first_non_only_hard_left_category_non_hard_problems = this.getFirstNonOnlyHardLeftCategoryNonHardProblems();
         this.completed_problems_sorted_by_times_completed = this.getCompletedProblemsSortedByTimesCompleted();
 
-        this.uploadCodeFileUrl = `${constants.CONSTANTS.API_URL}/src/upload_file`;
-        this.uploadCodeMetadataUrl = `${constants.CONSTANTS.API_URL}/performance/code_file`;
     }
 
     /**
@@ -203,8 +199,8 @@ class DSATrainer {
 
 
     async postProblemSolution(problem, { attempts_timestamp = [], comments = [], comm = "" } = {}) {
-        
-
+        // This method was originally for API upload - now it's a no-op for local-only operation
+        // All problem progress is tracked locally via this.problemReport
     }
 
 

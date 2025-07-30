@@ -18,9 +18,6 @@ const constants = {
         hard: "hard",
     },
     CONSTANTS: {
-        ACCOUNT_ID: 1,
-        API_URL: 'https://jmmgskxdgn.us-east-1.awsapprunner.com',
-        // API_URL: 'http://127.0.0.1:8000',
         CUTEBLUE: '#9ccfe7', // Cornflower
         CUTEPINK: '#f5a9cb', // Lavander Pink
         PUNCHPINK: '#F25278',

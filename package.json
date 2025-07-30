@@ -33,7 +33,6 @@
 		"enquirer": "^2.3.6",
 		"execa": "^6.1.0",
 		"expr-eval": "^2.0.2",
-		"form-data": "^4.0.0",
 		"markdown-it": "^13.0.1",
 		"markdown-to-json": "^0.5.4",
 		"marked": "^4.2.12",
