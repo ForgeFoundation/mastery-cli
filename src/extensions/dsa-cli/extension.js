@@ -14,10 +14,9 @@
  * - cloze: Fill-in-the-blank coding exercises
  */
 
-const { increasePerformance } = require('../../utils');
 const { Toggle, Confirm, prompt, AutoComplete, Survey, Input } = require('enquirer');
 const DSATrainer = require('./dsa-trainer.js');
-const { ExtensionModel } = require('../models');
+const { ExtensionModel, Command } = require('../models');
 
 
 let dsaTrainer = new DSATrainer({
@@ -25,17 +24,18 @@ let dsaTrainer = new DSATrainer({
 });
 
 const Settings = require('../../settings');
+const { CONSTANTS } = require('../../constants');
 
 class MasteryDSAExtension extends ExtensionModel {
 
-	constructor({ masteryManager } = {}) {
+	constructor(options = {}) {
 		super(
 			"MasteryDSAExtension",
 			"1.0.0",
-			"Mastery DSA Extension",
-			"Official",
+			"Data Structures and Algorithms practice extension for coding interviews",
+			"Mastery CLI Team",
 			"MIT",
-			{ masteryManager }
+			options
 		);
 	}
 
@@ -57,7 +57,7 @@ class MasteryDSAExtension extends ExtensionModel {
 
 		}
 		catch (err) {
-			if (DEV_MODE) console.log("Error in provideMissingReport", err)
+			console.log("Error in provideMissingReport", err)
 		}
 	}
 
@@ -95,9 +95,34 @@ class MasteryDSAExtension extends ExtensionModel {
 
 	getCommands() {
 		return {
-			dsa: new Command("Select Data structures and algorithms to solve", 'dsa'),
-			cloze: new Command("Cloze algorithm", 'cloze'),
-		}
+			dsa: new Command(
+				"Practice data structures and algorithms problems",
+				'dsa',
+				{
+					usage: 'mastery dsa [--all]',
+					examples: ['mastery dsa', 'mastery dsa --all'],
+					flags: {
+						'--all': 'Show all problems instead of recommended ones'
+					}
+				}
+			),
+			mdsa: new Command(
+				"Practice DSA problems in markdown/pseudocode mode",
+				'mdsa',
+				{
+					usage: 'mastery mdsa [--all]',
+					examples: ['mastery mdsa', 'mastery mdsa --all']
+				}
+			),
+			cloze: new Command(
+				"Practice fill-in-the-blank coding exercises",
+				'cloze',
+				{
+					usage: 'mastery cloze',
+					examples: ['mastery cloze']
+				}
+			)
+		};
 	}
 
 	updateAlgorithmPerformance = (problem_response, { performance_feature = "algo" } = {}) => {
@@ -105,6 +130,7 @@ class MasteryDSAExtension extends ExtensionModel {
 		const dsa_is_correct = problem_response.is_problem_solved;
 		if (dsa_is_correct) {
 			(async () => {
+				// console.log('this mastery exists?', this.masteryManager);
 				this.masteryManager.logSkillExperience(
 					performance_feature,
 					{
@@ -120,7 +146,11 @@ class MasteryDSAExtension extends ExtensionModel {
 		}
 	}
 
-	getHandles({ flags = {} } = {}) {
+	getHandles({ flags = {}, masteryManager = null } = {}) {
+		// Set masteryManager from context if not already set
+		if (masteryManager && !this.masteryManager) {
+			this.masteryManager = masteryManager;
+		}
 
 		dsaTrainer = new DSATrainer({
 			skip_problems: ["hello-world", "simple-sum"]

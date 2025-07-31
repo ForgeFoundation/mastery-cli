@@ -11,7 +11,6 @@ const { getDirAbsoluteUri, openEditorPlatformAgnostic, get_random } = require('.
 
 
 
-const DEBUG = false;
 
 /**
  * @class ProblemsManager - Management of the problems
@@ -91,7 +90,6 @@ class ProblemsManager {
      * @returns {<{filepath, difficulty, problem_slug}>} A random cloze problem for a given problem slug.
      */
     getRandomProblemCloze(problemSlug) {
-        // console.log("DEBUG | Cloze problems: ", cloze_problems);
         if (cloze_problems.length == 0) {
             console.log("No cloze problems found for this problem");
             return
@@ -190,7 +188,6 @@ class ProblemsManager {
      */
     getRandomProblemSlugWithCloze() {
         // Get a random clozeProblem Slugs
-        if (DEBUG) console.log("cloze_problems_list", cloze_problems_list)
         return get_random(cloze_problems_list);
     }
 
@@ -200,7 +197,6 @@ class ProblemsManager {
      * @param {dict<problem>} problem The problem to populate the template with
      */
     populateTemplate(problem, { base = "base_code" } = {}) {
-        if (DEBUG) console.log("Populating template with ", problem.file_path, "problem", problem, " and base ", base, "that was the base");
         if (base != "") {
             return this.copyFileToTemp(problem.file_path, { base: base });
         }
@@ -225,18 +221,13 @@ class ProblemsManager {
         // This can only be run with the .js 
 
         const temp_js_problem_filepath = this.temp_problem_filepath + '.js';
-        if (DEBUG) console.log("Getting temp_file_path from ", temp_js_problem_filepath);
         delete require.cache[require.resolve(temp_js_problem_filepath)] // delete the cache of the file
         const { Problem } = require(temp_js_problem_filepath);
 
-        if (DEBUG) console.log("metadata", problemMetadata.asJson);
-
         // const { ProblemTests } = require(this.temp_test_filepath);
         const ProblemTestsObject = this.selectTest(problemMetadata);
-        // debug problemTestObject instance
-        if (DEBUG) console.log("ProblemTestsObject instance: ", ProblemTestsObject);
         const problemTests = new ProblemTestsObject(Problem);
-        const is_correct = problemTests.runTests(); // debug is_correct
+        const is_correct = problemTests.runTests();
         return is_correct;
 
 

@@ -12,6 +12,7 @@
  * - mastery --help  : See all commands
  */
 
+const path = require('path');
 const cli = require('./src/cli');
 const log = require('./src/log');
 const utils = require('./src/utils');
@@ -25,57 +26,84 @@ const cmInfo = cli[1]
 const flags = cli_meow.flags;
 const input = cli_meow.input;
 
-let { debug } = flags;
-debug = debug ?? false;
 
 
 const { Mastery } = utils;
-
-
-// extensions TODO: Automate this things once located at the extensions folder
-
-// const DataScienceExtension = require('./src/extensions/data-science-cli/extension');
-const MasteryDSAExtension = require('./src/extensions/dsa-cli/extension');
-const DemoExtension = require('./src/extensions/demo/extension');
-
-
-function applyMixin(targetInstance, mixin) {
-    Object.assign(targetInstance, mixin);
-
-    if (mixin.getHandles) {
-        const commands = mixin.getHandles({flags: flags});
-        Object.entries(commands).forEach(([command, handler]) => {
-            targetInstance.commandHandlers[command] = handler.bind(targetInstance);
-        });
-    }
-}
+const { ExtensionManager } = require('./src/extensions/ExtensionManager');
 
 
 (async () => {
-	const masterDeck = await populateMasterDeck();
-	const mastery = new Mastery(Settings, masterDeck);
-	
-	applyMixin(mastery, new MasteryDSAExtension({ masteryManager: mastery }));
-	applyMixin(mastery, new DemoExtension);
+	try {
+		const masterDeck = await populateMasterDeck();
+		const mastery = new Mastery(Settings, masterDeck);
+		
+		// Initialize extension manager
+		const extensionManager = new ExtensionManager(
+			path.join(__dirname, 'src', 'extensions'),
+			{ info: () => {}, error: console.error, warn: console.warn }
+		);
+		
+		// Load all extensions automatically
+		const context = { 
+			flags: flags,
+			masteryManager: mastery,
+			settings: Settings
+		};
+		
+		extensionManager.loadAllExtensions(context);
+		
+		// Merge extension commands with mastery commands
+		const extensionCommands = {};
+		for (const command of extensionManager.getRegisteredCommands()) {
+			extensionCommands[command] = extensionManager.getCommandHandler(command);
+		}
+		
+		// Add extension management command
+		extensionCommands['extensions'] = () => {
+			console.log('\n=== Extension System Status ===');
+			const status = extensionManager.getStatus();
+			console.log(`Extensions Loaded: ${status.extensionsLoaded}`);
+			console.log(`Commands Registered: ${status.commandsRegistered}`);
+			console.log(`Hooks Registered: ${status.hooksRegistered}`);
+			
+			if (status.extensions.length > 0) {
+				console.log('\n=== Loaded Extensions ===');
+				status.extensions.forEach(ext => {
+					console.log(`• ${ext.name} v${ext.version} by ${ext.author}`);
+					console.log(`  ${ext.description}`);
+				});
+			}
+			
+			console.log('\n=== Available Extension Commands ===');
+			extensionManager.getRegisteredCommands().forEach(cmd => {
+				console.log(`• mastery ${cmd}`);
+			});
+		};
 
-	const options = Object.keys(cmInfo.commands);
-	input.includes(options[0]) && cli_meow.showHelp(0);
-	debug && log(flags);
+		// Combine built-in and extension commands
+		const allCommandHandlers = { ...mastery.commandHandlers, ...extensionCommands };
 
-	mastery.clearOnTalk = true;
+		const options = Object.keys(cmInfo.commands);
+		input.includes(options[0]) && cli_meow.showHelp(0);
 
-	var functionCalled = false;
-	for (const command of Object.keys(mastery.commandHandlers)) {
-        if (input.includes(command)) {
-			functionCalled = true;
-            const res = await mastery.commandHandlers[command]();
-            return; // Stop after executing the first matched command
-        }
-    }
-	if (!functionCalled) {
-		cli_meow.showHelp(0);
-		mastery.askToClean();
+		mastery.clearOnTalk = true;
+
+		var functionCalled = false;
+		for (const command of Object.keys(allCommandHandlers)) {
+			if (input.includes(command)) {
+				functionCalled = true;
+				const res = await allCommandHandlers[command]();
+				return; // Stop after executing the first matched command
+			}
+		}
+		
+		if (!functionCalled) {
+			cli_meow.showHelp(0);
+			mastery.askToClean();
+		}
+		
+	} catch (error) {
+		console.error('Application error:', error.message);
+		process.exit(1);
 	}
-
-
 })();

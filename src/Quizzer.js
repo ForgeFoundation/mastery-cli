@@ -51,7 +51,7 @@ class Quizzer {
      * OUT: 
      * - {form, replace}
      */
-    getYoungest = async (potential_questions, { limit = 3, account_id = Settings.account_id ?? 1, debug = false, randomOffline = false } = {}) => {
+    getYoungest = async (potential_questions, { limit = 3, account_id = Settings.account_id ?? 1, randomOffline = false } = {}) => {
 
         if (randomOffline) {
             return get_random_of_size(potential_questions, { count: limit });
@@ -97,16 +97,13 @@ class Quizzer {
 
     /**
      * Runs terms questions until the terms are done.
-     * @param {boolean} debug the debug flag
      * @param {function} exitMethod the exit method
      * @returns {int} attempts: The amount of attempts made to learn the terms.
      */
-    forceLearnTermQuestions = async ({ debug = false, exitMethod = () => { } } = {}) => {
+    forceLearnTermQuestions = async ({ exitMethod = () => { } } = {}) => {
         let potential_questions = this.terms;
 
         potential_questions = await this.getYoungest(potential_questions, { limit: 2, randomOffline: true });
-        if (debug) console.log("potential_questions", potential_questions);
-        if (debug) console.log("length", potential_questions.length);
         let attempts = 0;
         let attempts_timestamps = [];
 
@@ -547,11 +544,8 @@ class Quizzer {
 
             return ISANSWERCORRECT
         } catch (err) {
-            if (Settings?.dev_mode) {
-                console.log("Failed at: ask_term_question |  term_selected", term_selected)
-                console.log(err)
-
-            }
+            console.log("Failed at: ask_term_question |  term_selected", term_selected)
+            console.log(err)
             return false; // if in a session, this will skip the card because this is improperly made.
         }
 

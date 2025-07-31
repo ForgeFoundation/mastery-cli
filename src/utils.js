@@ -32,7 +32,6 @@ const Settings = require('./settings.js');
 const SettingsManager = require('./SettingsManager.js');
 
 
-const DEV_MODE = Settings.dev_mode ?? false;
 
 
 const { Quizzer: FlashQuizzer } = require(
@@ -125,9 +124,7 @@ const { reverse } = require('node:dns');
 function withOnlineCheck(fn) {
 	return async function (...args) {
 		if (!Settings?.online) {
-			if (!Settings?.dev_mode) {
-				console.log('Offline, modify in data\\settings.json');
-			}
+			console.log('Offline, modify in data\\settings.json');
 			return {};
 		}
 		return await fn.apply(this, args);
@@ -256,9 +253,7 @@ class Mastery {
 	login = async () => {
 
 		if (!Settings?.online) {
-			if (!Settings?.dev_mode) {
-				console.log('Offline, should not get comments');
-			}
+			console.log('Offline, should not get comments');
 			return {}
 		}
 
@@ -373,7 +368,7 @@ class Mastery {
 
 		}
 		catch (err) {
-			if (DEV_MODE) console.log("Error in provideMissingReport", err)
+			console.log("Error in provideMissingReport", err)
 		}
 	}
 
@@ -494,7 +489,7 @@ class Mastery {
 		let statPerformance = userPerformanceData[label]
 		statPerformance = formatObjectFeatures(statPerformance)
 
-		if (DEV_MODE) console.log(label, statPerformance);
+		console.log(label, statPerformance);
 	}
 
 
@@ -518,8 +513,7 @@ class Mastery {
 		})
 		// KEEP for debugging. It will throw error if any of the values are undefined
 
-
-		if (DEV_MODE) console.log(bar(bars))
+		console.log(bar(bars))
 
 	}
 
@@ -644,7 +638,6 @@ class Mastery {
 		 * @param {str} feature_name: The name of the feature to increase
 		 * @param {str} feature_key: The key of the feature to increase, e.g. 'feat', 'acad', 'pro', etc.
 		 * @param {int} value: The value to increase the performance by, default 1
-		 * @param {bool} debug ?= false : If to whether to debug api responses, etc.
 		 * @param {int} account_id ?= 1 : The account id to increase the performance; default Settings account_id or 1
 		 */
 		localStorageInstance.load().then(() => {
@@ -749,12 +742,11 @@ getArrayLastXDays = (days = 7) => {
  * Updates the count of times a concept has been practiced e.g. `algebra-problem-1` or 'js-how-to-loop'
  * @param {str} problem_name: The name of the problem to update
  * @param {bool} success ?= true : If to whether to increase the success count or the fail count
- * @param {bool} debug ?= false : If to whether to debug api responses, etc.
  * @param {int} account_id ?= 1 : The account id to increase the performance; default Settings account_id or 1
  * 
  * @returns {"message": f"Success updating {concept_term}, {conceptSelected.correct_times}"}
  */
-updateConcept = withOnlineCheck(async (problem_name, success = true, debug = false, account_id = Settings.account_id ?? 1) => {
+updateConcept = withOnlineCheck(async (problem_name, success = true, account_id = Settings.account_id ?? 1) => {
 
 })
 
@@ -888,8 +880,6 @@ const getCommitCategories = () => {
  * If it contains any of the specials categories (configurable in settings.js) it will log it in the feature (habit) database.
  * @param {bool} addMaidEmoji ?= true : If to whether to add a maid emoji
  * @param {bool} addCommitEmoji ?= true : If to whether to add a commit emoji
- 
- * @param {bool} debug ?= false : If to whether to debug api responses, etc.
  * @param {List: [date: comment]} comments_to_populate ?= [] : List of comments to populate
  * 
  * @Setting {bool} log_special_categories ?= true : Setting to whether to log special categories
@@ -928,9 +918,7 @@ const pushOriginHead = () => {
 const getComments = async (term, count = 5) => {
 
 	if (!Settings?.online) {
-		if (!Settings?.dev_mode) {
-			console.log('Offline, should not get comments');
-		}
+		console.log('Offline, should not get comments');
 		return {}
 	}
 
@@ -965,11 +953,10 @@ const printComments = (comments) => {
  * @param {bool} strict If true, it will only detect categories when they appear followed by '|' e.g. 'feat |'
  * @returns {string} category code e.g. 'feat'
  */
-const commitCategory = (commitMessage, strict = false, { debug = false } = {}) => {
+const commitCategory = (commitMessage, strict = false) => {
 
 
 	for (category of Object.values(getCommitCategories())) {
-		if (debug) console.log("commitMessage", commitMessage)
 
 		if (strict) {
 			if (commitMessage.includes(category.code + " |")) {
@@ -999,7 +986,7 @@ const autorelease = () => {
 }
 
 
-const inreasePerformanceOffline = (feature_name, increaseBY = 1, debug = true) => {
+const inreasePerformanceOffline = (feature_name, increaseBY = 1) => {
 
 }
 

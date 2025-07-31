@@ -1,7 +1,6 @@
 // Enumerator indicating the status of the problem e.g. solved, unsolved, aborted.
 
 const constants = {
-    DEV_MODE: true,
     PATHS: {
         base_cloze: "./cloze/base_cloze/",
         base: './base/'

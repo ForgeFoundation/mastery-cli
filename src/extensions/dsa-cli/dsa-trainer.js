@@ -384,9 +384,9 @@ class DSATrainer {
      * @returns {constants.ProblemStatus} The status of the problem (aborted | solved | unsolved)
      */
     async openAndTest(problem, { failed_attempts = 0, attempts_timestamp = [], comments = [], hintsGiven = [], copyProblemToTempInstead = true, md_pseudo_mode = false, store_to_stash = true } = {}) {
-        if (DEBUG) console.log(
-            "Opening problem: ", problem.slug,
-        );
+        // if (DEBUG) console.log(
+        //     "Opening problem: ", problem.slug,
+        // );
         let problem_details = this.problems_manager.getProblem(problem.slug);
         await this.openProblemMetadataInTerminal(problem, {
             md_pseudo_mode: md_pseudo_mode
@@ -502,7 +502,7 @@ class DSATrainer {
 
 
 
-        if (constants.DEV_MODE) Object.assign(choices, choices_dev_mode); // Add dev mode choices
+        Object.assign(choices, choices_dev_mode); // Add dev mode choices
         if (!md_pseudo_mode) {
             Object.assign(choices, {
 
